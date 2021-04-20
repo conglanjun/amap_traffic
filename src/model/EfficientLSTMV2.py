@@ -33,10 +33,10 @@ class EfficientLSTMV2:
         self.subStr = subStr
         # self.train_json_path = subStr + '/data/amap_traffic_annotations_train.json'
         self.train_json_path = subStr + '/data/amap_traffic_augment.json'
-        self.test_json_path = subStr + '/data/amap_traffic_annotations_test.json'
+        self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + ""
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B1/trained_weights_final.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -101,7 +101,7 @@ class EfficientLSTMV2:
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
-        batchSize = 4
+        batchSize = 1
 
         loadDict = handler.readJson(handler.train_json_path)
         batchItems = loadDict['annotations']
@@ -132,6 +132,29 @@ class EfficientLSTMV2:
         model.load_weights(self.PREMODELPATH)
         loadDict = handler.readJson(handler.test_json_path)
         batchItems = loadDict['annotations']
+
+        batchSize = 2
+        print(len(batchItems))
+        result = model.predict_generator(handler.dataPredict(batchItems, batchSize), len(batchItems) // batchSize, verbose=1)
+        print(result.shape)
+        with open(self.subStr + '/result.log', 'w') as rf:
+            for item in result:
+                rf.write(str(item) + ',\n')
+        result = np.argmax(result, axis=1)
+        print(result)
+        error_count = 0
+        for index, item in enumerate(batchItems):
+            status = int(item['status'])
+            if status != result[index]:
+                error_count += 1
+        print(error_count)
+        # for index, item in enumerate(batchItems):
+        #     item['status'] = str(result[index])
+        # with open(self.subStr + '/amap_submission.json', 'w') as wf:
+        #     json.dump(loadDict, wf)
+
+
+
 
 
 

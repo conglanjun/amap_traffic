@@ -126,8 +126,9 @@ class DataHandler:
                 batchImgs.append(framesImg5)
             yield tf.convert_to_tensor(batchImgs)
 
-    def dataAugment(self):
-        readJson = self.readJson(self.train_json_path)
+    def dataAugment(self, path):
+        # readJson = self.readJson(self.train_json_path)
+        readJson = self.readJson(path)
         items = readJson['annotations']
         label0Items = []
         label1Items = []
@@ -140,6 +141,8 @@ class DataHandler:
                 label1Items.append(item)
             elif status == 2:
                 label2Items.append(item)
+            else:
+                print(item)
         label0 = len(label0Items)
         label1 = len(label1Items)
         label2 = len(label2Items)
@@ -208,8 +211,9 @@ class DataHandler:
         with open(self.subStr + '/data/amap_traffic_augment.json', 'w') as wf:
             json.dump(readJson, wf)
 
-    def framesCount(self):
-        readJson = self.readJson(self.train_json_path)
+    def framesCount(self, path):
+        # readJson = self.readJson(self.train_json_path)
+        readJson = self.readJson(path)
         items = readJson['annotations']
         count = {}
         for index, item in enumerate(items):
@@ -220,8 +224,9 @@ class DataHandler:
                 count[framesLen] = 1
         print("count:", count)
 
-    def framesStatus(self):
-        readJson = self.readJson(self.train_json_path)
+    def framesStatus(self, path):
+        # readJson = self.readJson(self.train_json_path)
+        readJson = self.readJson(path)
         items = readJson['annotations']
         count = {}
         for index, item in enumerate(items):
@@ -272,14 +277,17 @@ if __name__ == '__main__':
     train_json_path = subStr + '/data/amap_traffic_annotations_train.json'
     # train_json_path = subStr + '/data/amap_traffic_augment.json'
     test_json_path = subStr + '/data/amap_traffic_annotations_test.json'
+    test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
     data_path = subStr + '/data/amap_traffic_train_0712/'
     data_test_path = subStr + '/data/amap_traffic_test_0712/'
-    handler = DataHandler(train_json_path, test_json_path, data_path)
-    # readJson = handler.readJson(handler.train_json_path)
-    # print(readJson)
-    # handler.dataAugment()
 
-    handler.framesCount()
-    handler.framesStatus()
+    # generate train data
+    handler = DataHandler(train_json_path, test_json_path, data_path)
+    readJson = handler.readJson(handler.train_json_path)
+    print(readJson)
+    handler.dataAugment()
+
+    handler.framesCount(handler.test_json_path)
+    handler.framesStatus(handler.test_json_path)
 
 
