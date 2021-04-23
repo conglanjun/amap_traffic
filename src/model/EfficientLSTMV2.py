@@ -10,10 +10,12 @@ import PIL
 import sys
 sys.path.append("..")
 from util.DataHandler import DataHandler
+from util.Score import Score
 from tqdm import tqdm
 import random
 import os
-import json
+import json, array
+from model.transformer.Transformer import Transformer
 
 class EfficientLSTMV2:
 
@@ -36,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B1/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B4/trained_weights_final.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -46,7 +48,7 @@ class EfficientLSTMV2:
         x2 = tf.squeeze(tf.keras.layers.Lambda(lambda x2: x2)(modelInput2))
         x3 = tf.squeeze(tf.keras.layers.Lambda(lambda x3: x3)(modelInput3))
         x4 = tf.squeeze(tf.keras.layers.Lambda(lambda x4: x4)(modelInput4))
-        net = efn.EfficientNetB1(include_top=False, weights='imagenet',
+        net = efn.EfficientNetB0(include_top=False, weights='imagenet',
                                  input_shape=(self.config['net_size'], self.config['net_size'], 3),
                                  pooling='avg')
 
@@ -70,7 +72,6 @@ class EfficientLSTMV2:
         return model
 
 
-
     def getEffLSTMModel(self):
         modelEff = self.getEffModel()
         modelEffOutput = tf.expand_dims(modelEff.output, axis=1)
@@ -82,11 +83,29 @@ class EfficientLSTMV2:
 
         return model
 
+    def getEffTransformerModel(self):
+        modelEff = self.getEffModel()
+        sample_transformer = Transformer(
+            num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
+            input_vocab_size=1280, target_vocab_size=2048, pe_input=1280)
+
+        enc_input = modelEff.output
+        fn_out = sample_transformer(enc_input, training=False, enc_padding_mask=None, look_ahead_mask=None, dec_padding_mask=None)
+
+        fn_reshape_out = tf.reshape(fn_out, (-1, 1280 * 2048))
+
+        outputs = Dense(self.config['num_class'], activation="softmax")(fn_reshape_out)
+
+        model = tf.keras.Model(modelEff.input, outputs)
+        model.summary()
+
+        return model
 
 
     def train(self):
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
-        model = self.getEffLSTMModel()
+        # model = self.getEffLSTMModel()
+        model = self.getEffTransformerModel()
 
         # if os.path.exists(self.PREMODELPATH):
         #     print('--load!--:', self.PREMODELPATH)
@@ -101,7 +120,7 @@ class EfficientLSTMV2:
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
-        batchSize = 1
+        batchSize = 4
 
         loadDict = handler.readJson(handler.train_json_path)
         batchItems = loadDict['annotations']
@@ -143,11 +162,25 @@ class EfficientLSTMV2:
         result = np.argmax(result, axis=1)
         print(result)
         error_count = 0
+        error_result = []
+        prediction_list = []
+        y_original_list = []
         for index, item in enumerate(batchItems):
             status = int(item['status'])
+            prediction_list.append(result[index])
+            y_original_list.append(status)
             if status != result[index]:
+                item = str(index) + ', status:' + str(status) + ', result:' + str(result[index])
+                error_result.append(item)
                 error_count += 1
         print(error_count)
+        error_result.append(error_count)
+        with open(self.subStr + '/result_error.log', 'w') as rf:
+            for item in error_result:
+                rf.write(str(item) + ',\n')
+        score = Score()
+        precision, recall, f1 = score.sklearnEvaluate(prediction_list, y_original_list)
+        print(precision, recall, f1)
         # for index, item in enumerate(batchItems):
         #     item['status'] = str(result[index])
         # with open(self.subStr + '/amap_submission.json', 'w') as wf:
