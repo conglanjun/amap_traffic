@@ -4,7 +4,7 @@ import efficientnet.tfkeras as efn
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.layers import LSTM, Bidirectional, Dense, Activation, Dropout
-
+import h5py
 import numpy as np
 import PIL
 import sys
@@ -38,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B4/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB1/trained_weights_final.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -48,7 +48,7 @@ class EfficientLSTMV2:
         x2 = tf.squeeze(tf.keras.layers.Lambda(lambda x2: x2)(modelInput2))
         x3 = tf.squeeze(tf.keras.layers.Lambda(lambda x3: x3)(modelInput3))
         x4 = tf.squeeze(tf.keras.layers.Lambda(lambda x4: x4)(modelInput4))
-        net = efn.EfficientNetB0(include_top=False, weights='imagenet',
+        net = efn.EfficientNetB1(include_top=False, weights='imagenet',
                                  input_shape=(self.config['net_size'], self.config['net_size'], 3),
                                  pooling='avg')
 
@@ -83,16 +83,18 @@ class EfficientLSTMV2:
 
         return model
 
-    def getEffTransformerModel(self):
+    def getEffTransformerModel(self, batchSize):
         modelEff = self.getEffModel()
+        enc_input = Dense(2048, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
         sample_transformer = Transformer(
             num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
-            input_vocab_size=1280, target_vocab_size=2048, pe_input=1280)
+            input_vocab_size=1280, target_vocab_size=64, pe_input=1280)
 
-        enc_input = modelEff.output
-        fn_out = sample_transformer(enc_input, training=False, enc_padding_mask=None, look_ahead_mask=None, dec_padding_mask=None)
+        enc_input_reshape = tf.reshape(enc_input, (batchSize, 8, self.config['rnn_size']))
+        fn_out = sample_transformer(enc_input_reshape, True, enc_padding_mask=None, look_ahead_mask=None, dec_padding_mask=None)
 
-        fn_reshape_out = tf.reshape(fn_out, (-1, 1280 * 2048))
+        # fn_reshape_out = tf.reshape(fn_out, (-1, 1280 * 1024))
+        fn_reshape_out = tf.keras.layers.Flatten()(fn_out)
 
         outputs = Dense(self.config['num_class'], activation="softmax")(fn_reshape_out)
 
@@ -103,13 +105,14 @@ class EfficientLSTMV2:
 
 
     def train(self):
+        batchSize = 8
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
         # model = self.getEffLSTMModel()
-        model = self.getEffTransformerModel()
+        model = self.getEffTransformerModel(batchSize)
 
-        # if os.path.exists(self.PREMODELPATH):
-        #     print('--load!--:', self.PREMODELPATH)
-        #     model.load_weights(self.PREMODELPATH)
+        if os.path.exists(self.PREMODELPATH):
+            print('--load!--:', self.PREMODELPATH)
+            model.load_weights(self.PREMODELPATH)
 
         adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
@@ -120,13 +123,12 @@ class EfficientLSTMV2:
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
-        batchSize = 4
-
         loadDict = handler.readJson(handler.train_json_path)
         batchItems = loadDict['annotations']
         random.shuffle(batchItems)
         numValidation = len(batchItems) // 10
         numTrain = len(batchItems) - numValidation
+        # numTrain = 8
 
         trainData = batchItems[: numTrain]
         valiData = batchItems[numTrain:]
@@ -137,7 +139,7 @@ class EfficientLSTMV2:
                             validation_data=handler.dataGenerator(valiData, batchSize, self.config['num_class']),
                             validation_steps=max(1, numValidation // batchSize),
                             # validation_steps=max(1, numValidation),
-                            epochs=10,
+                            epochs=5,
                             initial_epoch=0,
                             callbacks=[checkpoint])
         model.save_weights(self.subStr + '/src/model/checkpoint/' + 'trained_weights_final.h5')
@@ -145,14 +147,34 @@ class EfficientLSTMV2:
 
 
     def predict(self):
+        batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
-        model = self.getEffLSTMModel()
+        # model = self.getEffLSTMModel()
+        model = self.getEffTransformerModel(batchSize)
 
         model.load_weights(self.PREMODELPATH)
+
+        # f = h5py.File(self.PREMODELPATH)
+        # for key in f.keys():
+        #     print(key)
+        # print(f['model_weights'].attrs.keys())
+
         loadDict = handler.readJson(handler.test_json_path)
         batchItems = loadDict['annotations']
 
-        batchSize = 2
+        # label0 = 0
+        # label1 = 0
+        # label2 = 0
+        # for index, item in enumerate(batchItems):
+        #     status = int(item['status'])
+        #     if status == 0:
+        #         label0 += 1
+        #     elif status == 1:
+        #         label1 += 1
+        #     elif status == 2:
+        #         label2 += 1
+        # print('label0,1,2:', label0, label1, label2)
+
         print(len(batchItems))
         result = model.predict_generator(handler.dataPredict(batchItems, batchSize), len(batchItems) // batchSize, verbose=1)
         print(result.shape)
@@ -191,6 +213,35 @@ class EfficientLSTMV2:
 
 
 
+# label0,1,2: 402 97 101                0.12 0.44 0.44
+# model.layers[20].trainable_variables[0].numpy
+# array([[ 0.036309  ,  0.03461195, -0.02674555, ...,  0.04236516,
+#          0.04607766, -0.00878192],
+#        [ 0.04962379,  0.01646587, -0.03508455, ...,  0.04515529,
+#         -0.04109945,  0.08064999],
+#        [ 0.00673465, -0.04701834,  0.01092691, ..., -0.03731103,
+#         -0.00893005, -0.01128179],
+#        ...,
+#        [ 0.03907353,  0.01030799, -0.03931922, ..., -0.02314625,
+#         -0.02106541, -0.01232917],
+#        [-0.00598556, -0.02257906,  0.02021596, ..., -0.00395703,
+#          0.03175794,  0.04028033],
+#        [ 0.01436837,  0.03238466, -0.0258049 , ...,  0.03459903,
+#         -0.04169638,  0.00162689]], dtype=float32)>>
+
+# array([[ 0.03320085,  0.0335603 , -0.02587961, ...,  0.04870539,
+#          0.04522996, -0.00530622],
+#        [ 0.05220624,  0.01408922, -0.03600347, ...,  0.04476301,
+#         -0.03975284,  0.08197557],
+#        [ 0.00673465, -0.04701834,  0.01092691, ..., -0.03731103,
+#         -0.00893005, -0.01128179],
+#        ...,
+#        [ 0.03907353,  0.01030799, -0.03931922, ..., -0.02314625,
+#         -0.02106541, -0.01232917],
+#        [-0.00598556, -0.02257906,  0.02021596, ..., -0.00395703,
+#          0.03175794,  0.04028033],
+#        [ 0.01436837,  0.03238466, -0.0258049 , ...,  0.03459903,
+#         -0.04169638,  0.00162689]], dtype=float32)>>
 
 
 

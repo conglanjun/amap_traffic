@@ -130,7 +130,7 @@
         {
             "id": "000006",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -365,7 +365,7 @@
         {
             "id": "000015",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -415,7 +415,7 @@
         {
             "id": "000017",
             "key_frame": "5.jpg",
-            "status": 2,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -515,7 +515,7 @@
         {
             "id": "000021",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -588,7 +588,7 @@
         {
             "id": "000024",
             "key_frame": "5.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -665,7 +665,7 @@
         {
             "id": "000027",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -1073,7 +1073,7 @@
         {
             "id": "000043",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -1635,7 +1635,7 @@
         {
             "id": "000065",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -1685,7 +1685,7 @@
         {
             "id": "000067",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -1739,7 +1739,7 @@
         {
             "id": "000069",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -2578,7 +2578,7 @@
         {
             "id": "000102",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -2628,7 +2628,7 @@
         {
             "id": "000104",
             "key_frame": "2.jpg",
-            "status": 2,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3140,7 +3140,7 @@
         {
             "id": "000124",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3259,7 +3259,7 @@
         {
             "id": "000129",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3359,7 +3359,7 @@
         {
             "id": "000133",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3482,7 +3482,7 @@
         {
             "id": "000138",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3632,7 +3632,7 @@
         {
             "id": "000144",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -3686,7 +3686,7 @@
         {
             "id": "000146",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -4075,7 +4075,7 @@
         {
             "id": "000161",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -4198,7 +4198,7 @@
         {
             "id": "000166",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -4517,7 +4517,7 @@
         {
             "id": "000179",
             "key_frame": "5.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -4544,7 +4544,7 @@
         {
             "id": "000180",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -4567,7 +4567,7 @@
         {
             "id": "000181",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -5660,7 +5660,7 @@
         {
             "id": "000224",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -5687,7 +5687,7 @@
         {
             "id": "000225",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -5814,7 +5814,7 @@
         {
             "id": "000230",
             "key_frame": "4.jpg",
-            "status": 2,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -6172,7 +6172,7 @@
         {
             "id": "000244",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -6526,7 +6526,7 @@
         {
             "id": "000258",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -6553,7 +6553,7 @@
         {
             "id": "000259",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -6680,7 +6680,7 @@
         {
             "id": "000264",
             "key_frame": "5.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -6988,7 +6988,7 @@
         {
             "id": "000276",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -7015,7 +7015,7 @@
         {
             "id": "000277",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -7165,7 +7165,7 @@
         {
             "id": "000283",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -7411,7 +7411,7 @@
         {
             "id": "000293",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -7584,7 +7584,7 @@
         {
             "id": "000300",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -7980,7 +7980,7 @@
         {
             "id": "000316",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8245,7 +8245,7 @@
         {
             "id": "000327",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8376,7 +8376,7 @@
         {
             "id": "000332",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8476,7 +8476,7 @@
         {
             "id": "000336",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8603,7 +8603,7 @@
         {
             "id": "000341",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8807,7 +8807,7 @@
         {
             "id": "000349",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8857,7 +8857,7 @@
         {
             "id": "000351",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -8957,7 +8957,7 @@
         {
             "id": "000355",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9065,7 +9065,7 @@
         {
             "id": "000359",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9323,7 +9323,7 @@
         {
             "id": "000369",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9450,7 +9450,7 @@
         {
             "id": "000374",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9592,7 +9592,7 @@
         {
             "id": "000380",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9646,7 +9646,7 @@
         {
             "id": "000382",
             "key_frame": "5.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9781,7 +9781,7 @@
         {
             "id": "000387",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9831,7 +9831,7 @@
         {
             "id": "000389",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -9885,7 +9885,7 @@
         {
             "id": "000391",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10108,7 +10108,7 @@
         {
             "id": "000400",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10204,7 +10204,7 @@
         {
             "id": "000404",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10362,7 +10362,7 @@
         {
             "id": "000410",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10416,7 +10416,7 @@
         {
             "id": "000412",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10466,7 +10466,7 @@
         {
             "id": "000414",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10574,7 +10574,7 @@
         {
             "id": "000418",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10597,7 +10597,7 @@
         {
             "id": "000419",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10789,7 +10789,7 @@
         {
             "id": "000427",
             "key_frame": "2.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10816,7 +10816,7 @@
         {
             "id": "000428",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -10974,7 +10974,7 @@
         {
             "id": "000434",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11205,7 +11205,7 @@
         {
             "id": "000443",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11363,7 +11363,7 @@
         {
             "id": "000449",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11490,7 +11490,7 @@
         {
             "id": "000454",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11517,7 +11517,7 @@
         {
             "id": "000455",
             "key_frame": "5.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11544,7 +11544,7 @@
         {
             "id": "000456",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11594,7 +11594,7 @@
         {
             "id": "000458",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11744,7 +11744,7 @@
         {
             "id": "000464",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11848,7 +11848,7 @@
         {
             "id": "000468",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -11983,7 +11983,7 @@
         {
             "id": "000473",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12060,7 +12060,7 @@
         {
             "id": "000476",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12087,7 +12087,7 @@
         {
             "id": "000477",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12168,7 +12168,7 @@
         {
             "id": "000480",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12222,7 +12222,7 @@
         {
             "id": "000482",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12299,7 +12299,7 @@
         {
             "id": "000485",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12557,7 +12557,7 @@
         {
             "id": "000495",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -12665,7 +12665,7 @@
         {
             "id": "000499",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 1,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -13304,7 +13304,7 @@
         {
             "id": "000524",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -13612,7 +13612,7 @@
         {
             "id": "000536",
             "key_frame": "2.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -13689,7 +13689,7 @@
         {
             "id": "000539",
             "key_frame": "4.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14051,7 +14051,7 @@
         {
             "id": "000553",
             "key_frame": "3.jpg",
-            "status": 0,
+            "status": 2,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14305,7 +14305,7 @@
         {
             "id": "000563",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14328,7 +14328,7 @@
         {
             "id": "000564",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14424,7 +14424,7 @@
         {
             "id": "000568",
             "key_frame": "3.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14659,7 +14659,7 @@
         {
             "id": "000577",
             "key_frame": "5.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14790,7 +14790,7 @@
         {
             "id": "000582",
             "key_frame": "4.jpg",
-            "status": 2,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -14840,7 +14840,7 @@
         {
             "id": "000584",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",
@@ -15163,7 +15163,7 @@
         {
             "id": "000597",
             "key_frame": "4.jpg",
-            "status": 1,
+            "status": 0,
             "frames": [
                 {
                     "frame_name": "1.jpg",

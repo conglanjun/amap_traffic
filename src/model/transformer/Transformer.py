@@ -12,19 +12,19 @@ class Transformer(tf.keras.Model):
 
     # self.decoder = Decoder(num_layers, d_model, num_heads, dff, target_vocab_size, pe_target, rate)
 
-    self.final_layer = tf.keras.layers.Dense(target_vocab_size)
+    # self.final_layer = tf.keras.layers.Dense(target_vocab_size)
 
   def call(self, inp, training, enc_padding_mask, look_ahead_mask, dec_padding_mask):
 
-    enc_output = self.tokenizer(inp, training, enc_padding_mask)  # (batch_size, inp_seq_len, d_model)
+    enc_output = self.tokenizer(inp, True, enc_padding_mask)  # (batch_size, inp_seq_len, d_model)
 
     # dec_output.shape == (batch_size, tar_seq_len, d_model)
     # dec_output, attention_weights = self.decoder(tar, enc_output, training, look_ahead_mask, dec_padding_mask)
 
     # final_output = self.final_layer(dec_output)  # (batch_size, tar_seq_len, target_vocab_size)
-    final_output = self.final_layer(enc_output)  # (batch_size, tar_seq_len, target_vocab_size)
+    # final_output = self.final_layer(enc_output)  # (batch_size, tar_seq_len, target_vocab_size)
 
-    return final_output
+    return enc_output
 
 if __name__ == '__main__':
     sample_transformer = Transformer(num_layers=2, d_model=512, num_heads=8, dff=2048, input_vocab_size=2048, target_vocab_size=2048, pe_input=1280)
