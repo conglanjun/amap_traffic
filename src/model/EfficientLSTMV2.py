@@ -38,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB1/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB4/trained_weights_final.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -48,7 +48,7 @@ class EfficientLSTMV2:
         x2 = tf.squeeze(tf.keras.layers.Lambda(lambda x2: x2)(modelInput2))
         x3 = tf.squeeze(tf.keras.layers.Lambda(lambda x3: x3)(modelInput3))
         x4 = tf.squeeze(tf.keras.layers.Lambda(lambda x4: x4)(modelInput4))
-        net = efn.EfficientNetB1(include_top=False, weights='imagenet',
+        net = efn.EfficientNetB0(include_top=False, weights='imagenet',
                                  input_shape=(self.config['net_size'], self.config['net_size'], 3),
                                  pooling='avg')
 
@@ -57,25 +57,30 @@ class EfficientLSTMV2:
         self.config['rnn_size'] = 256
         ret0 = net(x0)
         ret0 = Dense(self.config['rnn_size'], activation=activation)(ret0)
+        ret0 = tf.expand_dims(ret0, axis=1)
         ret1 = net(x1)
         ret1 = Dense(self.config['rnn_size'], activation=activation)(ret1)
+        ret1 = tf.expand_dims(ret1, axis=1)
         ret2 = net(x2)
         ret2 = Dense(self.config['rnn_size'], activation=activation)(ret2)
+        ret2 = tf.expand_dims(ret2, axis=1)
         ret3 = net(x3)
         ret3 = Dense(self.config['rnn_size'], activation=activation)(ret3)
+        ret3 = tf.expand_dims(ret3, axis=1)
         ret4 = net(x4)
         ret4 = Dense(self.config['rnn_size'], activation=activation)(ret4)
+        ret4 = tf.expand_dims(ret4, axis=1)
         ret = tf.concat([ret0, ret1, ret2, ret3, ret4], axis=1)
         print(ret)
-        x = tf.keras.layers.Dense(self.config['rnn_size'] * 5, activation=activation)(ret)
+        x = tf.keras.layers.Dense(self.config['rnn_size'], activation=activation)(ret)
         model = tf.keras.Model(modelInput, x)
         return model
 
 
     def getEffLSTMModel(self):
         modelEff = self.getEffModel()
-        modelEffOutput = tf.expand_dims(modelEff.output, axis=1)
-        x = LSTM(self.config['rnn_size'])(modelEffOutput)
+        # modelEffOutput = tf.expand_dims(modelEff.output, axis=1)
+        x = LSTM(self.config['rnn_size'])(modelEff.output)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
         model = tf.keras.Model(modelEff.input, outputs)
@@ -85,13 +90,13 @@ class EfficientLSTMV2:
 
     def getEffTransformerModel(self, batchSize):
         modelEff = self.getEffModel()
-        enc_input = Dense(2048, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
+        # enc_input = Dense(2048, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
         sample_transformer = Transformer(
             num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
-            input_vocab_size=1280, target_vocab_size=64, pe_input=1280)
+            input_vocab_size=256, target_vocab_size=64, pe_input=256)
 
-        enc_input_reshape = tf.reshape(enc_input, (batchSize, 8, self.config['rnn_size']))
-        fn_out = sample_transformer(enc_input_reshape, True, enc_padding_mask=None, look_ahead_mask=None, dec_padding_mask=None)
+        # enc_input_reshape = tf.reshape(enc_input, (batchSize, 8, self.config['rnn_size']))
+        fn_out = sample_transformer(modelEff.output, True, enc_padding_mask=None, look_ahead_mask=None, dec_padding_mask=None)
 
         # fn_reshape_out = tf.reshape(fn_out, (-1, 1280 * 1024))
         fn_reshape_out = tf.keras.layers.Flatten()(fn_out)
@@ -103,16 +108,35 @@ class EfficientLSTMV2:
 
         return model
 
+    def getEffTransformerLSTMModel(self, batchSize):
+        modelEff = self.getEffModel()
+        # enc_input = Dense(256, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
+        sample_transformer = Transformer(
+            num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
+            input_vocab_size=256, target_vocab_size=64, pe_input=256)
+
+        # enc_input_reshape = tf.reshape(enc_input, (batchSize, 8, self.config['rnn_size']))
+        fn_out = sample_transformer(modelEff.output, True, enc_padding_mask=None, look_ahead_mask=None,
+                                    dec_padding_mask=None)
+
+        x = LSTM(self.config['rnn_size'])(fn_out)
+
+        outputs = Dense(self.config['num_class'], activation="softmax")(x)
+
+        model = tf.keras.Model(modelEff.input, outputs)
+        model.summary()
+        return model
 
     def train(self):
         batchSize = 8
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
-        # model = self.getEffLSTMModel()
-        model = self.getEffTransformerModel(batchSize)
+        model = self.getEffLSTMModel()
+        # model = self.getEffTransformerModel(batchSize)
+        # model = self.getEffTransformerLSTMModel(batchSize)
 
-        if os.path.exists(self.PREMODELPATH):
-            print('--load!--:', self.PREMODELPATH)
-            model.load_weights(self.PREMODELPATH)
+        # if os.path.exists(self.PREMODELPATH):
+        #     print('--load!--:', self.PREMODELPATH)
+        #     model.load_weights(self.PREMODELPATH)
 
         adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
@@ -139,12 +163,10 @@ class EfficientLSTMV2:
                             validation_data=handler.dataGenerator(valiData, batchSize, self.config['num_class']),
                             validation_steps=max(1, numValidation // batchSize),
                             # validation_steps=max(1, numValidation),
-                            epochs=5,
+                            epochs=20,
                             initial_epoch=0,
                             callbacks=[checkpoint])
         model.save_weights(self.subStr + '/src/model/checkpoint/' + 'trained_weights_final.h5')
-
-
 
     def predict(self):
         batchSize = 2
