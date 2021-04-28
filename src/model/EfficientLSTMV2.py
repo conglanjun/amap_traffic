@@ -38,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "ep003-loss0.108-val_loss0.166.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "trained_weights_final.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -138,7 +138,7 @@ class EfficientLSTMV2:
             print('--load!--:', self.PREMODELPATH)
             model.load_weights(self.PREMODELPATH)
 
-        adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        adam = tf.keras.optimizers.Adam(lr=0.0000001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
         model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
@@ -151,8 +151,8 @@ class EfficientLSTMV2:
         batchItems = loadDict['annotations']
         random.shuffle(batchItems)
         numValidation = len(batchItems) // 10
-        numTrain = len(batchItems) - numValidation
-        # numTrain = 8
+        # numTrain = len(batchItems) - numValidation
+        numTrain = 8
 
         trainData = batchItems[: numTrain]
         valiData = batchItems[numTrain:]
@@ -163,7 +163,7 @@ class EfficientLSTMV2:
                             validation_data=handler.dataGenerator(valiData, batchSize, self.config['num_class']),
                             validation_steps=max(1, numValidation // batchSize),
                             # validation_steps=max(1, numValidation),
-                            epochs=20,
+                            epochs=1,
                             initial_epoch=0,
                             callbacks=[checkpoint])
         model.save_weights(self.subStr + '/src/model/checkpoint/' + 'trained_weights_final.h5')
@@ -171,8 +171,8 @@ class EfficientLSTMV2:
     def predict(self):
         batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
-        # model = self.getEffLSTMModel()
-        model = self.getEffTransformerModel(batchSize)
+        model = self.getEffLSTMModel()
+        # model = self.getEffTransformerModel(batchSize)
 
         model.load_weights(self.PREMODELPATH)
 
