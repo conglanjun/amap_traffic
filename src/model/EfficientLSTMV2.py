@@ -38,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB4/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "ep003-loss0.108-val_loss0.166.h5"
 
     def getEffModel(self):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
