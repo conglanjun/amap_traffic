@@ -94,6 +94,18 @@ class EfficientLSTMV2:
 
         return model
 
+    def getEffBiLSTMModel(self, n):
+        modelEff = self.getEffModel(n)
+        # modelEffOutput = tf.expand_dims(modelEff.output, axis=1)
+        # x = LSTM(self.config['rnn_size'])(modelEff.output)
+        bi_x = Bidirectional(LSTM(self.config['rnn_size']), merge_mode='concat', weights=None)(modelEff.output)
+        outputs = Dense(self.config['num_class'], activation="softmax")(bi_x)
+
+        model = tf.keras.Model(modelEff.input, outputs)
+        model.summary()
+
+        return model
+
     def getEffTransformerModel(self, batchSize, n):
         modelEff = self.getEffModel(n)
         # enc_input = Dense(2048, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
@@ -136,7 +148,8 @@ class EfficientLSTMV2:
     def train(self, n):
         batchSize = 4
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
-        model = self.getEffLSTMModel(n)
+        # model = self.getEffLSTMModel(n)
+        model = self.getEffBiLSTMModel(n)
         # model = self.getEffTransformerModel(batchSize)
         # model = self.getEffTransformerLSTMModel(batchSize)
 
