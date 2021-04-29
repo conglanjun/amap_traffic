@@ -38,9 +38,9 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B1/ep004-loss0.015-val_loss0.046.h5"
 
-    def getEffModel(self):
+    def getEffModel(self, n=0):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
         modelInput0, modelInput1, modelInput2, modelInput3, modelInput4 = tf.split(modelInput, [1, 1, 1, 1, 1], 1)
         x0 = tf.squeeze(tf.keras.layers.Lambda(lambda x0: x0)(modelInput0))
@@ -48,9 +48,15 @@ class EfficientLSTMV2:
         x2 = tf.squeeze(tf.keras.layers.Lambda(lambda x2: x2)(modelInput2))
         x3 = tf.squeeze(tf.keras.layers.Lambda(lambda x3: x3)(modelInput3))
         x4 = tf.squeeze(tf.keras.layers.Lambda(lambda x4: x4)(modelInput4))
-        net = efn.EfficientNetB0(include_top=False, weights='imagenet',
-                                 input_shape=(self.config['net_size'], self.config['net_size'], 3),
-                                 pooling='avg')
+        net = efn.EfficientNetB0(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        if n == 1:
+            net = efn.EfficientNetB1(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n == 2:
+            net = efn.EfficientNetB2(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n == 3:
+            net = efn.EfficientNetB3(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n == 4:
+            net = efn.EfficientNetB4(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
 
         activation = tf.keras.layers.LeakyReLU()
 
@@ -77,8 +83,8 @@ class EfficientLSTMV2:
         return model
 
 
-    def getEffLSTMModel(self):
-        modelEff = self.getEffModel()
+    def getEffLSTMModel(self, n):
+        modelEff = self.getEffModel(n)
         # modelEffOutput = tf.expand_dims(modelEff.output, axis=1)
         x = LSTM(self.config['rnn_size'])(modelEff.output)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
@@ -88,8 +94,8 @@ class EfficientLSTMV2:
 
         return model
 
-    def getEffTransformerModel(self, batchSize):
-        modelEff = self.getEffModel()
+    def getEffTransformerModel(self, batchSize, n):
+        modelEff = self.getEffModel(n)
         # enc_input = Dense(2048, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
         sample_transformer = Transformer(
             num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
@@ -108,8 +114,8 @@ class EfficientLSTMV2:
 
         return model
 
-    def getEffTransformerLSTMModel(self, batchSize):
-        modelEff = self.getEffModel()
+    def getEffTransformerLSTMModel(self, batchSize, n):
+        modelEff = self.getEffModel(n)
         # enc_input = Dense(256, activation=tf.keras.layers.LeakyReLU())(modelEff.output)
         sample_transformer = Transformer(
             num_layers=2, d_model=self.config['rnn_size'], num_heads=4, dff=1024,
@@ -127,23 +133,34 @@ class EfficientLSTMV2:
         model.summary()
         return model
 
-    def train(self):
-        batchSize = 8
+    def train(self, n):
+        batchSize = 4
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
-        model = self.getEffLSTMModel()
+        model = self.getEffLSTMModel(n)
         # model = self.getEffTransformerModel(batchSize)
         # model = self.getEffTransformerLSTMModel(batchSize)
 
-        if os.path.exists(self.PREMODELPATH):
-            print('--load!--:', self.PREMODELPATH)
-            model.load_weights(self.PREMODELPATH)
+        # if os.path.exists(self.PREMODELPATH):
+        #     print('--load!--:', self.PREMODELPATH)
+        #     model.load_weights(self.PREMODELPATH)
 
-        adam = tf.keras.optimizers.Adam(lr=0.0000001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        saveDir = 'B0'
+        epochs = 20
+        if n == 1:
+            saveDir = 'B1'
+        elif n == 2:
+            saveDir = 'B2'
+        elif n == 3:
+            saveDir = 'B3'
+        elif n == 4:
+            saveDir = 'B4'
+
+        adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
         model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
         checkpoint = ModelCheckpoint(
-            self.subStr + '/src/model/checkpoint/' + 'ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+            self.subStr + '/src/model/checkpoint/' + saveDir + '/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
@@ -151,11 +168,11 @@ class EfficientLSTMV2:
         batchItems = loadDict['annotations']
         random.shuffle(batchItems)
         numValidation = len(batchItems) // 10
-        # numTrain = len(batchItems) - numValidation
-        numTrain = 8
+        numTrain = len(batchItems) - numValidation
+        # numTrain = 8
 
         trainData = batchItems[: numTrain]
-        valiData = batchItems[numTrain:]
+        valiData = batchItems[8:]
 
         model.fit_generator(handler.dataGenerator(trainData, batchSize, self.config['num_class']),
                             steps_per_epoch=max(1, numTrain // batchSize),
@@ -163,18 +180,18 @@ class EfficientLSTMV2:
                             validation_data=handler.dataGenerator(valiData, batchSize, self.config['num_class']),
                             validation_steps=max(1, numValidation // batchSize),
                             # validation_steps=max(1, numValidation),
-                            epochs=1,
+                            epochs=epochs,
                             initial_epoch=0,
                             callbacks=[checkpoint])
-        model.save_weights(self.subStr + '/src/model/checkpoint/' + 'trained_weights_final.h5')
+        model.save_weights(self.subStr + '/src/model/checkpoint/' + saveDir + '/trained_weights_final.h5')
 
     def predict(self):
         batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
-        model = self.getEffLSTMModel()
+        model = self.getEffLSTMModel(1)
         # model = self.getEffTransformerModel(batchSize)
 
-        model.load_weights(self.PREMODELPATH)
+        model.load_weights(self.subStr + '/src/model/checkpoint/' + 'B1/' + "trained_weights_final.h5")
 
         # f = h5py.File(self.PREMODELPATH)
         # for key in f.keys():
