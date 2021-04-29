@@ -38,7 +38,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B1/ep004-loss0.015-val_loss0.046.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B2/ep011-loss0.025-val_loss0.033.h5"
 
     def getEffModel(self, n=0):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -140,12 +140,12 @@ class EfficientLSTMV2:
         # model = self.getEffTransformerModel(batchSize)
         # model = self.getEffTransformerLSTMModel(batchSize)
 
-        # if os.path.exists(self.PREMODELPATH):
-        #     print('--load!--:', self.PREMODELPATH)
-        #     model.load_weights(self.PREMODELPATH)
+        if os.path.exists(self.PREMODELPATH):
+            print('--load!--:', self.PREMODELPATH)
+            model.load_weights(self.PREMODELPATH)
 
         saveDir = 'B0'
-        epochs = 20
+        epochs = 10
         if n == 1:
             saveDir = 'B1'
         elif n == 2:
@@ -172,7 +172,7 @@ class EfficientLSTMV2:
         # numTrain = 8
 
         trainData = batchItems[: numTrain]
-        valiData = batchItems[8:]
+        valiData = batchItems[numTrain:]
 
         model.fit_generator(handler.dataGenerator(trainData, batchSize, self.config['num_class']),
                             steps_per_epoch=max(1, numTrain // batchSize),
@@ -188,10 +188,10 @@ class EfficientLSTMV2:
     def predict(self):
         batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
-        model = self.getEffLSTMModel(1)
+        model = self.getEffLSTMModel(4)
         # model = self.getEffTransformerModel(batchSize)
 
-        model.load_weights(self.subStr + '/src/model/checkpoint/' + 'B1/' + "trained_weights_final.h5")
+        model.load_weights(self.subStr + '/src/model/checkpoint/' + 'B4/' + "ep005-loss0.049-val_loss0.005.h5")
 
         # f = h5py.File(self.PREMODELPATH)
         # for key in f.keys():
