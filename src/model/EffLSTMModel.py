@@ -7,6 +7,8 @@ class EffLSTMModel:
 
     def __init__(self):
         self.config = dict(
+            num_class=3,
+            net_size=224,
             rnn_size=256
         )
         self.EffModel = EffModel()

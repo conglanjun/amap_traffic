@@ -6,7 +6,10 @@ from tensorflow.keras.layers import Dense
 class EffModel:
 
     def __init__(self):
-        pass
+        self.config = dict(
+            net_size=224,
+            rnn_size=256
+        )
 
     def getEffModel(self, n=0):
         modelInput = tf.keras.Input(batch_input_shape=(None, 5, self.config['net_size'], self.config['net_size'], 3))
@@ -16,14 +19,16 @@ class EffModel:
         x2 = tf.squeeze(tf.keras.layers.Lambda(lambda x2: x2)(modelInput2))
         x3 = tf.squeeze(tf.keras.layers.Lambda(lambda x3: x3)(modelInput3))
         x4 = tf.squeeze(tf.keras.layers.Lambda(lambda x4: x4)(modelInput4))
-        net = efn.EfficientNetB0(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
-        if n == 1:
+        net = ''
+        if n % 10 == 0:
+            net = efn.EfficientNetB0(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n % 10 == 1:
             net = efn.EfficientNetB1(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
-        elif n == 2:
+        elif n % 10 == 2:
             net = efn.EfficientNetB2(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
-        elif n == 3:
+        elif n % 10 == 3:
             net = efn.EfficientNetB3(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
-        elif n == 4:
+        elif n % 10 == 4:
             net = efn.EfficientNetB4(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
 
         activation = tf.keras.layers.LeakyReLU()

@@ -8,8 +8,12 @@ if DEVICE == "GPU":
     print("Num GPUs Available:", len(tf.config.experimental.list_physical_devices('GPU')))
 
 if __name__ == '__main__':
+    # lstm = EfficientLSTM()
+    # lstm.train()
     lstm = EfficientLSTMV2()
+    # lstm.train(1)
     # lstm.train(2, type='EffLSTMModel')
-    # lstm.train(10, type='EffTransformerModel')
-    # lstm.train(33, type='EffTransformerLSTMModel')
-    lstm.train(34, type='EffTransformerLSTMModel')
+    # lstm.train(3)
+    # lstm.train(4)
+    lstm.train(14, type='EffTransformerModel')
+    # lstm.train(21, type='EffBiLSTMModel')

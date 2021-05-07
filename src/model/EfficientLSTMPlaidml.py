@@ -1,3 +1,8 @@
+import plaidml.keras
+plaidml.keras.install_backend()
+import os
+os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
+
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 import numpy as np
@@ -40,7 +45,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB2/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel'):
         batchSize = 4
@@ -57,12 +62,12 @@ class EfficientLSTMV2:
         elif type == 'EffTransformerLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerLSTMModel(n)
 
-        # if os.path.exists(self.PREMODELPATH):
-        #     print('--load!--:', self.PREMODELPATH)
-        #     model.load_weights(self.PREMODELPATH)
+        if os.path.exists(self.PREMODELPATH):
+            print('--load!--:', self.PREMODELPATH)
+            model.load_weights(self.PREMODELPATH)
 
         saveDir = 'B0'
-        epochs = 10
+        epochs = 5
         if n == 0:
             saveDir = 'B0'
         elif n == 1:
@@ -85,24 +90,6 @@ class EfficientLSTMV2:
             saveDir = 'TFB4'
         elif n == 20:
             saveDir = 'BB0'
-        elif n == 21:
-            saveDir = 'BB1'
-        elif n == 22:
-            saveDir = 'BB2'
-        elif n == 23:
-            saveDir = 'BB3'
-        elif n == 24:
-            saveDir = 'BB4'
-        elif n == 30:
-            saveDir = 'TFLB0'
-        elif n == 31:
-            saveDir = 'TFLB1'
-        elif n == 32:
-            saveDir = 'TFLB2'
-        elif n == 33:
-            saveDir = 'TFLB3'
-        elif n == 34:
-            saveDir = 'TFLB4'
 
         adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
@@ -173,28 +160,8 @@ class EfficientLSTMV2:
             saveDir = 'TFB4'
         elif n == 20:
             saveDir = 'BB0'
-        elif n == 21:
-            saveDir = 'BB1'
-        elif n == 22:
-            saveDir = 'BB2'
-        elif n == 23:
-            saveDir = 'BB3'
-        elif n == 24:
-            saveDir = 'BB4'
-        elif n == 30:
-            saveDir = 'TFLB0'
-        elif n == 31:
-            saveDir = 'TFLB1'
-        elif n == 32:
-            saveDir = 'TFLB2'
-        elif n == 33:
-            saveDir = 'TFLB3'
-        elif n == 34:
-            saveDir = 'TFLB4'
 
-        path_load = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
-        print(path_load)
-        model.load_weights(path_load)
+        model.load_weights(self.subStr + '/src/model/checkpoint/' + saveDir + "/ep002-loss0.075-val_loss0.028.h5")
 
         # f = h5py.File(self.PREMODELPATH)
         # for key in f.keys():

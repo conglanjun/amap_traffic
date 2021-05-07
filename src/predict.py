@@ -13,4 +13,7 @@ if __name__ == '__main__':
     # lstm = EfficientLSTM()
     # lstm.train()
     lstm = EfficientLSTMV2()
-    lstm.predict()
+    # lstm.predict(21, type='EffBiLSTMModel')
+    # lstm.predict(13, type='EffTransformerModel')
+    # lstm.predict(33, type='EffTransformerLSTMModel')
+    lstm.predict(34, type='EffTransformerLSTMModel')
