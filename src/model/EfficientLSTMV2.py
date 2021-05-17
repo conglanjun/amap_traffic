@@ -40,7 +40,7 @@ class EfficientLSTMV2:
         self.test_json_path = subStr + '/data/amap_traffic_annotations_test_answer.json'
         self.data_path = subStr + '/data/amap_traffic_train_0712/'
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
-        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "TFB2/trained_weights_final.h5"
+        self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel'):
         batchSize = 4
@@ -56,10 +56,8 @@ class EfficientLSTMV2:
             model = self.EffTransformerModel.getEffTransformerModel(n)
         elif type == 'EffTransformerLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerLSTMModel(n)
-
-        # if os.path.exists(self.PREMODELPATH):
-        #     print('--load!--:', self.PREMODELPATH)
-        #     model.load_weights(self.PREMODELPATH)
+        elif type == 'EffTransformerBLSTMModel':
+            model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
 
         saveDir = 'B0'
         epochs = 10
@@ -103,13 +101,31 @@ class EfficientLSTMV2:
             saveDir = 'TFLB3'
         elif n == 34:
             saveDir = 'TFLB4'
+        elif n == 40:
+            saveDir = 'EFTB0'
+        elif n == 41:
+            saveDir = 'EFTB1'
+        elif n == 42:
+            saveDir = 'EFTB2'
+        elif n == 43:
+            saveDir = 'EFTB3'
+        elif n == 44:
+            saveDir = 'EFTB4'
 
-        adam = tf.keras.optimizers.Adam(lr=0.0001, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
+        self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
+        print(self.PREMODELPATH)
+
+        if os.path.exists(self.PREMODELPATH):
+            print('--load!--:', self.PREMODELPATH)
+            model.load_weights(self.PREMODELPATH)
+
+
+        adam = tf.keras.optimizers.Adam(lr=0.00005, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
         model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
 
         checkpoint = ModelCheckpoint(
-            self.subStr + '/src/model/checkpoint/' + saveDir + '/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+            self.subStr + '/src/model/checkpoint/' + saveDir + '/ep_{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
@@ -134,8 +150,8 @@ class EfficientLSTMV2:
                             callbacks=[checkpoint])
         model.save_weights(self.subStr + '/src/model/checkpoint/' + saveDir + '/trained_weights_final.h5')
 
-    def predict(self, n, type='EffLSTMModel'):
-        batchSize = 2
+    def predict(self, n, type='EffLSTMModel', predictPath=''):
+        batchSize = 4
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
 
         model = ''
@@ -148,6 +164,8 @@ class EfficientLSTMV2:
             model = self.EffTransformerModel.getEffTransformerModel(n)
         elif type == 'EffTransformerLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerLSTMModel(n)
+        elif type == 'EffTransformerBLSTMModel':
+            model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
 
 
         saveDir = 'B0'
@@ -191,8 +209,20 @@ class EfficientLSTMV2:
             saveDir = 'TFLB3'
         elif n == 34:
             saveDir = 'TFLB4'
+        elif n == 40:
+            saveDir = 'EFTB0'
+        elif n == 41:
+            saveDir = 'EFTB1'
+        elif n == 42:
+            saveDir = 'EFTB2'
+        elif n == 43:
+            saveDir = 'EFTB3'
+        elif n == 44:
+            saveDir = 'EFTB4'
 
         path_load = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
+        path_load = self.subStr + '/src/model/checkpoint/' + saveDir + "/" + predictPath
+
         print(path_load)
         model.load_weights(path_load)
 
@@ -237,14 +267,16 @@ class EfficientLSTMV2:
                 item = str(index) + ', status:' + str(status) + ', result:' + str(result[index])
                 error_result.append(item)
                 error_count += 1
-        print(error_count)
+        print(error_count, "%.4f" % ((600 - error_count) / 600.0))
         error_result.append(error_count)
         with open(self.subStr + '/result_error.log', 'w') as rf:
             for item in error_result:
                 rf.write(str(item) + ',\n')
         score = Score()
         precision, recall, f1 = score.sklearnEvaluate(prediction_list, y_original_list)
-        print(precision, recall, f1)
+        print("precision", precision, "%.4f" % (precision[0] * 0.33 + precision[1] * 0.33 + precision[2] * 0.33))
+        print("recall", recall, "%.4f" % (recall[0] * 0.33 + recall[1] * 0.33 + recall[2] * 0.33))
+        print("f1", f1, "%.4f" % (f1[0] * 0.33 + f1[1] * 0.3333 + f1[2] * 0.33))
         # for index, item in enumerate(batchItems):
         #     item['status'] = str(result[index])
         # with open(self.subStr + '/amap_submission.json', 'w') as wf:

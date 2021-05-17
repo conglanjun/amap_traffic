@@ -32,3 +32,14 @@ class EffTransformerLSTMModel:
         model = tf.keras.Model(modelEff.input, outputs)
         model.summary()
         return model
+
+    def getEffTransformerBLSTMModel(self, n):
+        modelEff = self.EffModel.getEffTFModel(n)
+        modelEffOut = Dropout(0.3)(modelEff.output)
+        x = LSTM(self.config['rnn_size'])(modelEffOut)
+        ld_x_out = Dropout(0.3)(x)
+        outputs = Dense(self.config['num_class'], activation="softmax")(ld_x_out)
+
+        model = tf.keras.Model(modelEff.input, outputs)
+        model.summary()
+        return model

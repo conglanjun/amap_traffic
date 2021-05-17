@@ -36,7 +36,7 @@ class Score:
 
     def sklearnEvaluate(self, prediction, y_original):
         precision, recall, f_score, true_sum = score(y_original, prediction)
-        print('precision: {}'.format(precision))
-        print('recall: {}'.format(recall))
-        print('fscore: {}'.format(f_score))
+        # print('precision: {}'.format(precision))
+        # print('recall: {}'.format(recall))
+        # print('fscore: {}'.format(f_score))
         return precision, recall, f_score
