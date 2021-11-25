@@ -41,6 +41,8 @@ class EffModel:
             net = efn.EfficientNetB4(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
         elif n % 10 == 5:
             net = efn.EfficientNetB5(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n % 10 == 6:
+            net = efn.EfficientNetB6(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
 
         activation = tf.keras.layers.LeakyReLU()
 
@@ -87,6 +89,8 @@ class EffModel:
             net = efn.EfficientNetB4(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
         elif n % 10 == 5:
             net = efn.EfficientNetB5(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
+        elif n % 10 == 6:
+            net = efn.EfficientNetB6(include_top=False, weights='imagenet', input_shape=(self.config['net_size'], self.config['net_size'], 3), pooling='avg')
 
         activation = tf.keras.layers.LeakyReLU()
 

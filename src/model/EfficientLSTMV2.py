@@ -59,7 +59,7 @@ class EfficientLSTMV2:
         elif type == 'EffTransformerBLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
 
-        saveDir = 'B5'
+        saveDir = 'B6'
         epochs = 10
         if n == 0:
             saveDir = 'B0'
@@ -73,6 +73,8 @@ class EfficientLSTMV2:
             saveDir = 'B4'
         elif n == 5:
             saveDir = 'B5'
+        elif n == 6:
+            saveDir = 'B6'
         elif n == 10:
             saveDir = 'TFB0'
         elif n == 11:
