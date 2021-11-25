@@ -12,6 +12,7 @@ from model.EffLSTMModel import EffLSTMModel
 from model.EffBiLSTMModel import EffBiLSTMModel
 from model.EffTransformerModel import EffTransformerModel
 from model.EffTransformerLSTMModel import EffTransformerLSTMModel
+from model.EffRnnModel import EffRnnModel
 
 
 class EfficientLSTMV2:
@@ -30,6 +31,7 @@ class EfficientLSTMV2:
         self.EffModel = EffModel()
         self.EffLSTMModel = EffLSTMModel()
         self.EffBiLSTMModel = EffBiLSTMModel()
+        self.EffRnnModel = EffRnnModel()
         self.EffTransformerModel = EffTransformerModel()
         self.EffTransformerLSTMModel = EffTransformerLSTMModel()
         realPath = os.path.realpath(__file__)
@@ -50,8 +52,10 @@ class EfficientLSTMV2:
 
         if type == 'EffLSTMModel':
             model = self.EffLSTMModel.getEffLSTMModel(n)
-        if type == 'EffBiLSTMModel':
+        elif type == 'EffBiLSTMModel':
             model = self.EffBiLSTMModel.getEffBiLSTMModel(n)
+        elif type == 'EffRnnModel':
+            model = self.EffRnnModel.getEffRnnModel(n)
         elif type == 'EffTransformerModel':
             model = self.EffTransformerModel.getEffTransformerModel(n)
         elif type == 'EffTransformerLSTMModel':
