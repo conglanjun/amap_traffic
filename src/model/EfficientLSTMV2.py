@@ -43,7 +43,7 @@ class EfficientLSTMV2:
         self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel'):
-        batchSize = 4
+        batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
 
         model = ''
@@ -71,6 +71,8 @@ class EfficientLSTMV2:
             saveDir = 'B3'
         elif n == 4:
             saveDir = 'B4'
+        elif n == 5:
+            saveDir = 'B5'
         elif n == 10:
             saveDir = 'TFB0'
         elif n == 11:

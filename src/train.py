@@ -1,6 +1,8 @@
 import tensorflow as tf
 from model.EfficientLSTMV2 import EfficientLSTMV2
-
+import os
+# git token
+# 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
 
 DEVICE = "GPU"
 
@@ -11,6 +13,7 @@ if __name__ == '__main__':
     lstm = EfficientLSTMV2()
     # lstm.train(3, type='EffLSTMModel')
     # lstm.train(4, type='EffLSTMModel')
+    lstm.train(5, type='EffLSTMModel')
     # lstm.train(10, type='EffTransformerModel')
     # lstm.train(11, type='EffTransformerModel')
     # lstm.train(12, type='EffTransformerModel')
@@ -29,8 +32,8 @@ if __name__ == '__main__':
     # lstm.train(33, type='EffTransformerLSTMModel')
     # lstm.train(34, type='EffTransformerLSTMModel')
 
-    lstm.train(40, type='EffTransformerBLSTMModel')
-    lstm.train(41, type='EffTransformerBLSTMModel')
-    lstm.train(42, type='EffTransformerBLSTMModel')
-    lstm.train(43, type='EffTransformerBLSTMModel')
-    lstm.train(44, type='EffTransformerBLSTMModel')
+    # lstm.train(40, type='EffTransformerBLSTMModel')
+    # lstm.train(41, type='EffTransformerBLSTMModel')
+    # lstm.train(42, type='EffTransformerBLSTMModel')
+    # lstm.train(43, type='EffTransformerBLSTMModel')
+    # lstm.train(44, type='EffTransformerBLSTMModel')
