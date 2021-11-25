@@ -3,6 +3,10 @@ from model.EfficientLSTMV2 import EfficientLSTMV2
 import os
 # git token
 # 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
+# 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
+
+
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 DEVICE = "GPU"
 
@@ -14,7 +18,7 @@ if __name__ == '__main__':
     # lstm.train(3, type='EffLSTMModel')
     # lstm.train(4, type='EffLSTMModel')
     # lstm.train(5, type='EffLSTMModel')
-    lstm.train(6, type='EffLSTMModel')
+    # lstm.train(6, type='EffLSTMModel')
     # lstm.train(10, type='EffTransformerModel')
     # lstm.train(11, type='EffTransformerModel')
     # lstm.train(12, type='EffTransformerModel')
@@ -38,3 +42,8 @@ if __name__ == '__main__':
     # lstm.train(42, type='EffTransformerBLSTMModel')
     # lstm.train(43, type='EffTransformerBLSTMModel')
     # lstm.train(44, type='EffTransformerBLSTMModel')
+
+    # lstm.train(50, type='EffRnnModel')
+    # lstm.train(60, type='EffGruModel')
+    # lstm.train(70, type='EffBiRnnModel')
+    lstm.train(80, type='EffBiGruModel')

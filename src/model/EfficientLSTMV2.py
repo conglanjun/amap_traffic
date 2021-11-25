@@ -12,6 +12,10 @@ from model.EffLSTMModel import EffLSTMModel
 from model.EffBiLSTMModel import EffBiLSTMModel
 from model.EffTransformerModel import EffTransformerModel
 from model.EffTransformerLSTMModel import EffTransformerLSTMModel
+from model.EffRnnModel import EffRnnModel
+from model.EffBiRnnModel import EffBiRnnModel
+from model.EffGruModel import EffGruModel
+from model.EffBiGruModel import EffBiGruModel
 
 
 class EfficientLSTMV2:
@@ -29,6 +33,10 @@ class EfficientLSTMV2:
         )
         self.EffModel = EffModel()
         self.EffLSTMModel = EffLSTMModel()
+        self.EffRnnModel = EffRnnModel()
+        self.EffBiRnnModel = EffBiRnnModel()
+        self.EffGruModel = EffGruModel()
+        self.EffBiGruModel = EffBiGruModel()
         self.EffBiLSTMModel = EffBiLSTMModel()
         self.EffTransformerModel = EffTransformerModel()
         self.EffTransformerLSTMModel = EffTransformerLSTMModel()
@@ -50,8 +58,16 @@ class EfficientLSTMV2:
 
         if type == 'EffLSTMModel':
             model = self.EffLSTMModel.getEffLSTMModel(n)
-        if type == 'EffBiLSTMModel':
+        elif type == 'EffBiLSTMModel':
             model = self.EffBiLSTMModel.getEffBiLSTMModel(n)
+        elif type == 'EffRnnModel':
+            model = self.EffRnnModel.getEffRnnModel(n)
+        elif type == 'EffBiRnnModel':
+            model = self.EffBiRnnModel.getEffBiRnnModel(n)
+        elif type == 'EffGruModel':
+            model = self.EffGruModel.getEffGruModel(n)
+        elif type == 'EffBiGruModel':
+            model = self.EffBiGruModel.getEffBiGruModel(n)
         elif type == 'EffTransformerModel':
             model = self.EffTransformerModel.getEffTransformerModel(n)
         elif type == 'EffTransformerLSTMModel':
@@ -59,7 +75,7 @@ class EfficientLSTMV2:
         elif type == 'EffTransformerBLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
 
-        saveDir = 'B6'
+        saveDir = 'EBGB0'
         epochs = 10
         if n == 0:
             saveDir = 'B0'
@@ -115,6 +131,46 @@ class EfficientLSTMV2:
             saveDir = 'EFTB3'
         elif n == 44:
             saveDir = 'EFTB4'
+        elif n == 50:
+            saveDir = 'ERB0'
+        elif n == 51:
+            saveDir = 'ERB1'
+        elif n == 52:
+            saveDir = 'ERB2'
+        elif n == 53:
+            saveDir = 'ERB3'
+        elif n == 54:
+            saveDir = 'ERB4'
+        elif n == 60:
+            saveDir = 'EGB0'
+        elif n == 61:
+            saveDir = 'EGB1'
+        elif n == 62:
+            saveDir = 'EGB2'
+        elif n == 63:
+            saveDir = 'EGB3'
+        elif n == 64:
+            saveDir = 'EGB4'
+        elif n == 70:
+            saveDir = 'EBRB0'
+        elif n == 71:
+            saveDir = 'EBRB1'
+        elif n == 72:
+            saveDir = 'EBRB2'
+        elif n == 73:
+            saveDir = 'EBRB3'
+        elif n == 74:
+            saveDir = 'EBRB4'
+        elif n == 80:
+            saveDir = 'EBGB0'
+        elif n == 81:
+            saveDir = 'EBGB1'
+        elif n == 82:
+            saveDir = 'EBGB2'
+        elif n == 83:
+            saveDir = 'EBGB3'
+        elif n == 84:
+            saveDir = 'EBGB4'
 
         self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
         print(self.PREMODELPATH)

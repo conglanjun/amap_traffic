@@ -16,7 +16,7 @@ class EffBiLSTMModel:
     def getEffBiLSTMModel(self, n):
         modelEff = self.EffModel.getEffModel(n)
         modelEffOut = Dropout(0.2)(modelEff.output)
-        bi_x = Bidirectional(LSTM(self.config['rnn_size']), merge_mode='concat', weights=None)(modelEffOut)
+        bi_x = Bidirectional(LSTM(self.config['rnn_size']), merge_mode='concat', weights=None)(modelEffOut)  # (None, 512)
         bi_x_out = Dropout(0.2)(bi_x)
         outputs = Dense(self.config['num_class'], activation="softmax")(bi_x_out)
 
