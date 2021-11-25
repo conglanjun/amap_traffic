@@ -2,7 +2,7 @@ import tensorflow as tf
 from model.EfficientLSTMV2 import EfficientLSTMV2
 import os
 # git token
-# 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
+# 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
 
 DEVICE = "GPU"
 
@@ -13,7 +13,8 @@ if __name__ == '__main__':
     lstm = EfficientLSTMV2()
     # lstm.train(3, type='EffLSTMModel')
     # lstm.train(4, type='EffLSTMModel')
-    lstm.train(5, type='EffLSTMModel')
+    # lstm.train(5, type='EffLSTMModel')
+    lstm.train(6, type='EffLSTMModel')
     # lstm.train(10, type='EffTransformerModel')
     # lstm.train(11, type='EffTransformerModel')
     # lstm.train(12, type='EffTransformerModel')
