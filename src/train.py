@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # lstm.train(4, type='EffLSTMModel')
     # lstm.train(5, type='EffLSTMModel')
     # lstm.train(6, type='EffLSTMModel')
-    lstm.train(7, type='EffLSTMModel')
+    # lstm.train(7, type='EffLSTMModel')
     # lstm.train(10, type='EffTransformerModel')
     # lstm.train(11, type='EffTransformerModel')
     # lstm.train(12, type='EffTransformerModel')
@@ -27,6 +27,7 @@ if __name__ == '__main__':
     # lstm.train(22, type='EffBiLSTMModel')
     # lstm.train(23, type='EffBiLSTMModel')
     # lstm.train(24, type='EffBiLSTMModel')
+    lstm.train(25, type='EffBiLSTMModel')
 
     # lstm.train(30, type='EffTransformerLSTMModel')
     # lstm.train(31, type='EffTransformerLSTMModel')
