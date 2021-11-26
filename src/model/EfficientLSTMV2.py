@@ -50,7 +50,7 @@ class EfficientLSTMV2:
         self.data_test_path = subStr + '/data/amap_traffic_test_0712/'
         self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
-    def train(self, n, type='EffLSTMModel'):
+    def train(self, n, type='EffLSTMModel', saveDir='B0'):
         batchSize = 2
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
 
@@ -75,7 +75,6 @@ class EfficientLSTMV2:
         elif type == 'EffTransformerBLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
 
-        saveDir = 'BB5'
         epochs = 10
         if n == 0:
             saveDir = 'B0'

@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # lstm.train(22, type='EffBiLSTMModel')
     # lstm.train(23, type='EffBiLSTMModel')
     # lstm.train(24, type='EffBiLSTMModel')
-    lstm.train(25, type='EffBiLSTMModel')
+    lstm.train(25, type='EffBiLSTMModel', saveDir='BB5')
 
     # lstm.train(30, type='EffTransformerLSTMModel')
     # lstm.train(31, type='EffTransformerLSTMModel')
