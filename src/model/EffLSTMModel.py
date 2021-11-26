@@ -15,11 +15,11 @@ class EffLSTMModel:
 
     def getEffLSTMModel(self, n):
         modelEff = self.EffModel.getEffModel(n)
-        modelEffOut = Dropout(0.2)(modelEff.output)
-        x = LSTM(self.config['rnn_size'])(modelEffOut)
+        modelEffOut = Dropout(0.2)(modelEff.output)  # (None, 5, 256)
+        x = LSTM(self.config['rnn_size'])(modelEffOut)  # (None, 256)
         x = Dropout(0.2)(x)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
-        model = tf.keras.Model(modelEff.input, outputs)
+        model = tf.keras.Model(modelEff.input, outputs)  # (None, 3)
         model.summary()
         return model
