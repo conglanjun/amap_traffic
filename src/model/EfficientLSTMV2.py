@@ -51,7 +51,7 @@ class EfficientLSTMV2:
         self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel', saveDir='B0'):
-        batchSize = 2
+        batchSize = 4
         handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
 
         model = ''
@@ -114,6 +114,10 @@ class EfficientLSTMV2:
             saveDir = 'BB4'
         elif n == 25:
             saveDir = 'BB5'
+        elif n == 26:
+            saveDir = 'BB6'
+        elif n == 27:
+            saveDir = 'BB7'
         elif n == 30:
             saveDir = 'TFLB0'
         elif n == 31:
@@ -144,6 +148,12 @@ class EfficientLSTMV2:
             saveDir = 'ERB3'
         elif n == 54:
             saveDir = 'ERB4'
+        elif n == 55:
+            saveDir = 'ERB5'
+        elif n == 56:
+            saveDir = 'ERB6'
+        elif n == 57:
+            saveDir = 'ERB7'
         elif n == 60:
             saveDir = 'EGB0'
         elif n == 61:
@@ -154,6 +164,12 @@ class EfficientLSTMV2:
             saveDir = 'EGB3'
         elif n == 64:
             saveDir = 'EGB4'
+        elif n == 65:
+            saveDir = 'EGB5'
+        elif n == 66:
+            saveDir = 'EGB6'
+        elif n == 67:
+            saveDir = 'EGB7'
         elif n == 70:
             saveDir = 'EBRB0'
         elif n == 71:
@@ -164,6 +180,12 @@ class EfficientLSTMV2:
             saveDir = 'EBRB3'
         elif n == 74:
             saveDir = 'EBRB4'
+        elif n == 75:
+            saveDir = 'EBRB5'
+        elif n == 76:
+            saveDir = 'EBRB6'
+        elif n == 77:
+            saveDir = 'EBRB7'
         elif n == 80:
             saveDir = 'EBGB0'
         elif n == 81:
@@ -174,6 +196,12 @@ class EfficientLSTMV2:
             saveDir = 'EBGB3'
         elif n == 84:
             saveDir = 'EBGB4'
+        elif n == 85:
+            saveDir = 'EBGB5'
+        elif n == 86:
+            saveDir = 'EBGB6'
+        elif n == 87:
+            saveDir = 'EBGB7'
 
         self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
         print(self.PREMODELPATH)
