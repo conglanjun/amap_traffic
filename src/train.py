@@ -2,7 +2,7 @@ import tensorflow as tf
 from model.EfficientLSTMV2 import EfficientLSTMV2
 import os
 # git token
-# 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
+# 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
 
 DEVICE = "GPU"
 
