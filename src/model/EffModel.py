@@ -1,9 +1,9 @@
 import tensorflow as tf
-# import efficientnet.tfkeras as efn
+import efficientnet.tfkeras as efn
 from tensorflow.keras.layers import Dense
 from model.transformer.Transformer import Transformer
-from EfficientNet import EfficientNet as efn
-from EfficientNet import efficient_net_b0
+# from EfficientNet import EfficientNet as efn
+# from EfficientNet import efficient_net_b0
 
 
 class EffModel:
