@@ -1,0 +1,7 @@
+###########################################################################
+
+TensorFlow and TensorFlow Addons with ML Compute for macOS 11.0 successfully installed.
+
+To begin, activate the virtual environment:
+
+   . "/Users/conglanjun/pythonProject/amap_traffic/tensorflow_macos/y/bin/activate" 
