@@ -222,6 +222,10 @@ class EfficientLSTMV2:
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
         tbCheckpoint = TensorBoard(log_dir='./logs', histogram_freq=1)
+        # summary_writer = tf.summary.create_file_writer('./logs')
+        # with summary_writer .as_default():
+        #     tf.summary.scalar('loss',float(2),step=0)                       
+        #     tf.summary.scalar('acc', float(80), step=0)           
 
         loadDict = handler.readJson(handler.train_json_path)
         batchItems = loadDict['annotations']
