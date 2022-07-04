@@ -1,22 +1,23 @@
+from model.EffModelDense import EffModelDense
+from model.EffBiGruModel import EffBiGruModel
+from model.EffGruModel import EffGruModel
+from model.EffBiRnnModel import EffBiRnnModel
+from model.EffRnnModel import EffRnnModel
+from model.EffTransformerLSTMModel import EffTransformerLSTMModel
+from model.EffTransformerModel import EffTransformerModel
+from model.EffBiLSTMModel import EffBiLSTMModel
+from model.EffLSTMModel import EffLSTMModel
+from model.EffModel import EffModel
+import os
+import random
+from util.Score import Score
+from util.DataHandler import DataHandler
 from cmath import log
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, TensorBoard
 import numpy as np
 import sys
 sys.path.append("..")
-from util.DataHandler import DataHandler
-from util.Score import Score
-import random
-import os
-from model.EffModel import EffModel
-from model.EffLSTMModel import EffLSTMModel
-from model.EffBiLSTMModel import EffBiLSTMModel
-from model.EffTransformerModel import EffTransformerModel
-from model.EffTransformerLSTMModel import EffTransformerLSTMModel
-from model.EffRnnModel import EffRnnModel
-from model.EffBiRnnModel import EffBiRnnModel
-from model.EffGruModel import EffGruModel
-from model.EffBiGruModel import EffBiGruModel
 
 
 class EfficientLSTMV2:
@@ -41,8 +42,10 @@ class EfficientLSTMV2:
         self.EffBiLSTMModel = EffBiLSTMModel()
         self.EffTransformerModel = EffTransformerModel()
         self.EffTransformerLSTMModel = EffTransformerLSTMModel()
+        self.EffModelDense = EffModelDense()
         realPath = os.path.realpath(__file__)
-        subStr = realPath[:realPath[: realPath[: realPath.rindex('/')].rindex('/')].rindex('/')]
+        subStr = realPath[:realPath[: realPath[: realPath.rindex(
+            '/')].rindex('/')].rindex('/')]
         self.subStr = subStr
         # self.train_json_path = subStr + '/data/amap_traffic_annotations_train.json'
         self.train_json_path = subStr + '/data/amap_traffic_augment.json'
@@ -53,7 +56,8 @@ class EfficientLSTMV2:
 
     def train(self, n, type='EffLSTMModel', saveDir='B0'):
         batchSize = 4
-        handler = DataHandler(self.train_json_path, self.test_json_path, self.data_path)
+        handler = DataHandler(self.train_json_path,
+                              self.test_json_path, self.data_path)
 
         model = ''
 
@@ -75,6 +79,8 @@ class EfficientLSTMV2:
             model = self.EffTransformerLSTMModel.getEffTransformerLSTMModel(n)
         elif type == 'EffTransformerBLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
+        elif type == 'EffModelDense':
+            model = self.EffModelDense.getEffModelDense(n)
 
         epochs = 10
         if n == 0:
@@ -203,29 +209,48 @@ class EfficientLSTMV2:
             saveDir = 'EBGB6'
         elif n == 87:
             saveDir = 'EBGB7'
+        elif n == 90:
+            saveDir = 'EMDB0'
+        elif n == 91:
+            saveDir = 'EMDB1'
+        elif n == 92:
+            saveDir = 'EMDB2'
+        elif n == 93:
+            saveDir = 'EMDB3'
+        elif n == 94:
+            saveDir = 'EMDB4'
+        elif n == 95:
+            saveDir = 'EMDB5'
+        elif n == 96:
+            saveDir = 'EMDB6'
+        elif n == 97:
+            saveDir = 'EMDB7'
 
-        self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
+        self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + \
+            saveDir + "/trained_weights_final.h5"
         print(self.PREMODELPATH)
 
         if os.path.exists(self.PREMODELPATH):
             print('--load!--:', self.PREMODELPATH)
             model.load_weights(self.PREMODELPATH)
 
+        adam = tf.keras.optimizers.Adam(
+            lr=0.00005, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
 
-        adam = tf.keras.optimizers.Adam(lr=0.00005, beta_1=0.9, beta_2=0.999, epsilon=1e-08, decay=0.0)
-
-        model.compile(optimizer=adam, loss='categorical_crossentropy', metrics=['accuracy'])
+        model.compile(optimizer=adam,
+                      loss='categorical_crossentropy', metrics=['accuracy'])
 
         checkpoint = ModelCheckpoint(
-            self.subStr + '/src/model/checkpoint/' + saveDir + '/ep_{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+            self.subStr + '/src/model/checkpoint/' + saveDir +
+            '/ep_{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
         tbCheckpoint = TensorBoard(log_dir='./logs', histogram_freq=1)
         # summary_writer = tf.summary.create_file_writer('./logs')
         # with summary_writer .as_default():
-        #     tf.summary.scalar('loss',float(2),step=0)                       
-        #     tf.summary.scalar('acc', float(80), step=0)           
+        #     tf.summary.scalar('loss',float(2),step=0)
+        #     tf.summary.scalar('acc', float(80), step=0)
 
         loadDict = handler.readJson(handler.train_json_path)
         batchItems = loadDict['annotations']
@@ -240,17 +265,21 @@ class EfficientLSTMV2:
         model.fit_generator(handler.dataGenerator(trainData, batchSize, self.config['num_class']),
                             steps_per_epoch=max(1, numTrain // batchSize),
                             # steps_per_epoch=max(1, numTrain),
-                            validation_data=handler.dataGenerator(valiData, batchSize, self.config['num_class']),
-                            validation_steps=max(1, numValidation // batchSize),
+                            validation_data=handler.dataGenerator(
+                                valiData, batchSize, self.config['num_class']),
+                            validation_steps=max(
+                                1, numValidation // batchSize),
                             # validation_steps=max(1, numValidation),
                             epochs=epochs,
                             initial_epoch=0,
                             callbacks=[checkpoint, tbCheckpoint])
-        model.save_weights(self.subStr + '/src/model/checkpoint/' + saveDir + '/trained_weights_final.h5')
+        model.save_weights(self.subStr + '/src/model/checkpoint/' +
+                           saveDir + '/trained_weights_final.h5')
 
     def predict(self, n, type='EffLSTMModel', predictPath='', saveDir='B0'):
         batchSize = 4
-        handler = DataHandler(self.train_json_path, self.test_json_path, self.data_test_path)
+        handler = DataHandler(self.train_json_path,
+                              self.test_json_path, self.data_test_path)
 
         model = ''
 
@@ -272,6 +301,8 @@ class EfficientLSTMV2:
             model = self.EffTransformerLSTMModel.getEffTransformerLSTMModel(n)
         elif type == 'EffTransformerBLSTMModel':
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
+        elif type == 'EffModelDense':
+            model = self.EffModelDense.getEffModelDense(n)
 
         if n == 0:
             saveDir = 'B0'
@@ -399,8 +430,25 @@ class EfficientLSTMV2:
             saveDir = 'EBGB6'
         elif n == 87:
             saveDir = 'EBGB7'
+        elif n == 90:
+            saveDir = 'EMDB0'
+        elif n == 91:
+            saveDir = 'EMDB1'
+        elif n == 92:
+            saveDir = 'EMDB2'
+        elif n == 93:
+            saveDir = 'EMDB3'
+        elif n == 94:
+            saveDir = 'EMDB4'
+        elif n == 95:
+            saveDir = 'EMDB5'
+        elif n == 96:
+            saveDir = 'EMDB6'
+        elif n == 97:
+            saveDir = 'EMDB7'
 
-        path_load = self.subStr + '/src/model/checkpoint/' + saveDir + "/trained_weights_final.h5"
+        path_load = self.subStr + '/src/model/checkpoint/' + \
+            saveDir + "/trained_weights_final.h5"
         path_load = self.subStr + '/src/model/checkpoint/' + saveDir + "/" + predictPath
 
         print(path_load)
@@ -428,7 +476,8 @@ class EfficientLSTMV2:
         # print('label0,1,2:', label0, label1, label2)
 
         print(len(batchItems))
-        result = model.predict_generator(handler.dataPredict(batchItems, batchSize), len(batchItems) // batchSize, verbose=1)
+        result = model.predict_generator(handler.dataPredict(
+            batchItems, batchSize), len(batchItems) // batchSize, verbose=1)
         print(result.shape)
         with open(self.subStr + '/result.log', 'w') as rf:
             for item in result:
@@ -444,7 +493,8 @@ class EfficientLSTMV2:
             prediction_list.append(result[index])
             y_original_list.append(status)
             if status != result[index]:
-                item = str(index) + ', status:' + str(status) + ', result:' + str(result[index])
+                item = str(index) + ', status:' + str(status) + \
+                    ', result:' + str(result[index])
                 error_result.append(item)
                 error_count += 1
         print(error_count, "%.4f" % ((600 - error_count) / 600.0))
@@ -453,18 +503,18 @@ class EfficientLSTMV2:
             for item in error_result:
                 rf.write(str(item) + ',\n')
         score = Score()
-        precision, recall, f1 = score.sklearnEvaluate(prediction_list, y_original_list)
-        print("precision", precision, "%.4f" % (precision[0] * 0.33 + precision[1] * 0.33 + precision[2] * 0.33))
-        print("recall", recall, "%.4f" % (recall[0] * 0.33 + recall[1] * 0.33 + recall[2] * 0.33))
-        print("f1", f1, "%.4f" % (f1[0] * 0.33 + f1[1] * 0.3333 + f1[2] * 0.33))
+        precision, recall, f1 = score.sklearnEvaluate(
+            prediction_list, y_original_list)
+        print("precision", precision, "%.4f" %
+              (precision[0] * 0.33 + precision[1] * 0.33 + precision[2] * 0.33))
+        print("recall", recall, "%.4f" %
+              (recall[0] * 0.33 + recall[1] * 0.33 + recall[2] * 0.33))
+        print("f1", f1, "%.4f" %
+              (f1[0] * 0.33 + f1[1] * 0.3333 + f1[2] * 0.33))
         # for index, item in enumerate(batchItems):
         #     item['status'] = str(result[index])
         # with open(self.subStr + '/amap_submission.json', 'w') as wf:
         #     json.dump(loadDict, wf)
-
-
-
-
 
 
 # label0,1,2: 402 97 101                0.12 0.44 0.44
@@ -496,17 +546,3 @@ class EfficientLSTMV2:
 #          0.03175794,  0.04028033],
 #        [ 0.01436837,  0.03238466, -0.0258049 , ...,  0.03459903,
 #         -0.04169638,  0.00162689]], dtype=float32)>>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -7,15 +7,16 @@ import os
 DEVICE = "GPU"
 
 if DEVICE == "GPU":
-    print("Num GPUs Available:", len(tf.config.experimental.list_physical_devices('GPU')))
+    print("Num GPUs Available:", len(
+        tf.config.experimental.list_physical_devices('GPU')))
 
 if __name__ == '__main__':
     lstm = EfficientLSTMV2()
-    lstm.train(0, type='EffLSTMModel', saveDir='B0')
-    lstm.train(1, type='EffLSTMModel', saveDir='B1')
-    lstm.train(2, type='EffLSTMModel', saveDir='B2')
-    lstm.train(3, type='EffLSTMModel', saveDir='B3')
-    lstm.train(4, type='EffLSTMModel', saveDir='B4')
+    # lstm.train(0, type='EffLSTMModel', saveDir='B0')
+    # lstm.train(1, type='EffLSTMModel', saveDir='B1')
+    # lstm.train(2, type='EffLSTMModel', saveDir='B2')
+    # lstm.train(3, type='EffLSTMModel', saveDir='B3')
+    # lstm.train(4, type='EffLSTMModel', saveDir='B4')
     # lstm.train(5, type='EffLSTMModel', saveDir='B5')
     # lstm.train(6, type='EffLSTMModel', saveDir='B6')
     # lstm.train(7, type='EffLSTMModel', saveDir='B7')
@@ -25,11 +26,11 @@ if __name__ == '__main__':
     # lstm.train(13, type='EffTransformerModel')
     # lstm.train(14, type='EffTransformerModel')
 
-    lstm.train(20, type='EffBiLSTMModel', saveDir='BB0')
-    lstm.train(21, type='EffBiLSTMModel', saveDir='BB1')
-    lstm.train(22, type='EffBiLSTMModel', saveDir='BB2')
-    lstm.train(23, type='EffBiLSTMModel', saveDir='BB3')
-    lstm.train(24, type='EffBiLSTMModel', saveDir='BB4')
+    # lstm.train(20, type='EffBiLSTMModel', saveDir='BB0')
+    # lstm.train(21, type='EffBiLSTMModel', saveDir='BB1')
+    # lstm.train(22, type='EffBiLSTMModel', saveDir='BB2')
+    # lstm.train(23, type='EffBiLSTMModel', saveDir='BB3')
+    # lstm.train(24, type='EffBiLSTMModel', saveDir='BB4')
     # lstm.train(25, type='EffBiLSTMModel', saveDir='BB5')
     # lstm.train(26, type='EffBiLSTMModel', saveDir='BB6')
     # lstm.train(27, type='EffBiLSTMModel', saveDir='BB7')
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     # lstm.train(55, type='EffRnnModel', saveDir='ERB5')
     # lstm.train(56, type='EffRnnModel', saveDir='ERB6')
     # lstm.train(57, type='EffRnnModel', saveDir='ERB7')
-    
+
     # lstm.train(61, type='EffGruModel', saveDir='EGB0')
     # lstm.train(61, type='EffGruModel', saveDir='EGB1')
     # lstm.train(62, type='EffGruModel', saveDir='EGB2')
@@ -81,3 +82,12 @@ if __name__ == '__main__':
     # lstm.train(85, type='EffBiGruModel', saveDir='EBGB5')
     # lstm.train(86, type='EffBiGruModel', saveDir='EBGB6')
     # lstm.train(87, type='EffBiGruModel', saveDir='EBGB7')
+
+    lstm.train(90, type='EffModelDense', saveDir='EMDB0')
+    lstm.train(91, type='EffModelDense', saveDir='EMDB1')
+    lstm.train(92, type='EffModelDense', saveDir='EMDB2')
+    lstm.train(93, type='EffModelDense', saveDir='EMDB3')
+    lstm.train(94, type='EffModelDense', saveDir='EMDB4')
+    lstm.train(95, type='EffModelDense', saveDir='EMDB5')
+    lstm.train(96, type='EffModelDense', saveDir='EMDB6')
+    lstm.train(97, type='EffModelDense', saveDir='EMDB7')
