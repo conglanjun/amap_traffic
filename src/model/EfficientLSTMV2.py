@@ -246,7 +246,10 @@ class EfficientLSTMV2:
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
-        tbCheckpoint = TensorBoard(log_dir='./logs', histogram_freq=1)
+        if not os.path.exists('./logs/'+saveDir):
+            print('--mkdir--:', './logs/'+saveDir)
+            os.mkdir('./logs/'+saveDir)
+        tbCheckpoint = TensorBoard(log_dir='./logs/'+saveDir, histogram_freq=1)
         # summary_writer = tf.summary.create_file_writer('./logs')
         # with summary_writer .as_default():
         #     tf.summary.scalar('loss',float(2),step=0)
