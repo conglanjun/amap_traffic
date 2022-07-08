@@ -55,7 +55,7 @@ class EfficientLSTMV2:
         self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel', saveDir='B0'):
-        batchSize = 4
+        batchSize = 8
         handler = DataHandler(self.train_json_path,
                               self.test_json_path, self.data_path)
 

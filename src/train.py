@@ -83,7 +83,7 @@ if __name__ == '__main__':
     # lstm.train(86, type='EffBiGruModel', saveDir='EBGB6')
     # lstm.train(87, type='EffBiGruModel', saveDir='EBGB7')
 
-    # lstm.train(90, type='EffModelDense', saveDir='EMDB0')
+    lstm.train(90, type='EffModelDense', saveDir='EMDB0')
     lstm.train(91, type='EffModelDense', saveDir='EMDB1')
     lstm.train(92, type='EffModelDense', saveDir='EMDB2')
     lstm.train(93, type='EffModelDense', saveDir='EMDB3')
