@@ -55,7 +55,7 @@ class EfficientLSTMV2:
         self.PREMODELPATH = subStr + '/src/model/checkpoint/' + "B0/trained_weights_final.h5"
 
     def train(self, n, type='EffLSTMModel', saveDir='B0'):
-        batchSize = 8
+        batchSize = 4
         handler = DataHandler(self.train_json_path,
                               self.test_json_path, self.data_path)
 
@@ -245,6 +245,10 @@ class EfficientLSTMV2:
             '/ep_{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
+
+        if not os.path.exists('/src/model/checkpoint/' + saveDir):
+            print('--mkdir--:', '/src/model/checkpoint/' + saveDir)
+            os.mkdir('/src/model/checkpoint/' + saveDir)
 
         if not os.path.exists('./logs/'+saveDir):
             print('--mkdir--:', './logs/'+saveDir)
