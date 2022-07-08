@@ -246,9 +246,9 @@ class EfficientLSTMV2:
             monitor='val_loss', save_weights_only=True, save_best_only=False, period=1)
         print('save path:', self.subStr + '/src/model/checkpoint/')
 
-        if not os.path.exists('/src/model/checkpoint/' + saveDir):
-            print('--mkdir--:', '/src/model/checkpoint/' + saveDir)
-            os.mkdir('/src/model/checkpoint/' + saveDir)
+        if not os.path.exists(self.subStr+'/src/model/checkpoint/' + saveDir):
+            print('--mkdir--:', self.subStr+'/src/model/checkpoint/' + saveDir)
+            os.mkdir(self.subStr+'/src/model/checkpoint/' + saveDir)
 
         if not os.path.exists('./logs/'+saveDir):
             print('--mkdir--:', './logs/'+saveDir)
