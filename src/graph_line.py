@@ -24,10 +24,10 @@ if __name__ == '__main__':
 
     # f1 score
     yB = [0.5950, 0.6182, 0.6385, 0.6398, 0.6200, 0.6802, 0.6556, 0.6014]
-    # yBB = [0.6000, 0.6150, 0.6148, 0.5801, 0.6105, 0.6108, 0.6441, 0.6370]
-    # yRB = [0.6191, 0.5812, 0.6305, 0.5786, 0.6077, 0.5762, 0.6123, 0.6172]
+    yBB = [0.6000, 0.6150, 0.6148, 0.5801, 0.6105, 0.6108, 0.6441, 0.6370]
+    yRB = [0.6191, 0.5812, 0.6305, 0.5786, 0.6077, 0.5762, 0.6123, 0.6172]
     yGB = [0.6031, 0.5531, 0.6310, 0.6120, 0.6112, 0.6191, 0.6191, 0.6191]
-    # yBRB = [0.6184, 0.6016, 0.5862, 0.5882, 0.5589, 0.5547, 0.5849, 0.5930]
+    yBRB = [0.6184, 0.6016, 0.5862, 0.5882, 0.5589, 0.5547, 0.5849, 0.5930]
     yBGB = [0.5877, 0.5868, 0.6608, 0.6307, 0.6847, 0.6415, 0.6557, 0.6381]
     yEB = [0.6083, 0.5926, 0.6335, 0.6417, 0.6136, 0.6587, 0.6303, 0.6437]
 
@@ -43,10 +43,10 @@ if __name__ == '__main__':
     # 'o', 'v', '^', '<', '>', '8', 's', 'p', '*', 'h', 'H', 'D', 'd','P', 'X'
 
     plt.plot(x11, yB, color='orange', marker='*', label='ELSTM')
-    # plt.plot(x11, yBB, color='blue', marker='o', label='EBLSTM')
-    # plt.plot(x11, yRB, color='red', marker='^', label='ERNN')
+    plt.plot(x11, yBB, color='blue', marker='o', label='EBLSTM')
+    plt.plot(x11, yRB, color='red', marker='^', label='ERNN')
     plt.plot(x11, yGB, color='green', marker='v', label='EGRU')
-    # plt.plot(x11, yBRB, color='cyan', marker='+', label='EBRNN')
+    plt.plot(x11, yBRB, color='cyan', marker='+', label='EBRNN')
     plt.plot(x11, yBGB, color='magenta', marker='D', label='EBGRU')
     plt.plot(x11, yEB, color='slategray', marker='h', label='EM')
 
@@ -66,10 +66,10 @@ if __name__ == '__main__':
     plt.title('F1 score', y=-0.13)
     plt.legend([
         'ELSTM',
-        # 'EBLSTM',
-        # 'ERNN',
+        'EBLSTM',
+        'ERNN',
         'EGRU',
-        # 'EBRNN',
+        'EBRNN',
         'EBGRU',
         'EM'
     ], loc='upper left')
