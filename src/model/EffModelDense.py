@@ -31,7 +31,7 @@ class EffModelDense:
 
     def getVggModelDense(self):
         modelVgg = self.VggModel.getVggModel()
-        modelVggOut = Dropout(0.2)(modelVgg.output)  # (None, 5, 256)
+        modelVggOut = (modelVgg.output)  # (None, 5, 256)
         x = tf.reduce_mean(modelVggOut, axis=1)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
@@ -41,7 +41,7 @@ class EffModelDense:
 
     def getResnetModelDense(self):
         modelResnet = self.ResnetModel.getResnetModel()
-        modelResnetOut = Dropout(0.2)(modelResnet.output)  # (None, 5, 256)
+        modelResnetOut = (modelResnet.output)  # (None, 5, 256)
         x = tf.reduce_mean(modelResnetOut, axis=1)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
