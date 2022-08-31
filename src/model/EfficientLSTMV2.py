@@ -82,9 +82,9 @@ class EfficientLSTMV2:
         elif type == 'EffModelDense':
             model = self.EffModelDense.getEffModelDense(n)
         elif type == 'VggModelDense':
-            model = self.EffModelDense.getVggModelDense(n)
+            model = self.EffModelDense.getVggModelDense()
         elif type == 'ResnetModelDense':
-            model = self.EffModelDense.getResnetModelDense(n)
+            model = self.EffModelDense.getResnetModelDense()
 
         epochs = 10
         if n == 0:
@@ -319,9 +319,9 @@ class EfficientLSTMV2:
         elif type == 'EffModelDense':
             model = self.EffModelDense.getEffModelDense(n)
         elif type == 'VggModelDense':
-            model = self.EffModelDense.getVggModelDense(n)
+            model = self.EffModelDense.getVggModelDense()
         elif type == 'ResnetModelDense':
-            model = self.EffModelDense.getResnetModelDense(n)
+            model = self.EffModelDense.getResnetModelDense()
 
         if n == 0:
             saveDir = 'B0'
