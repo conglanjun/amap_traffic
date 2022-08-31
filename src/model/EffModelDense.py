@@ -35,7 +35,7 @@ class EffModelDense:
         x = tf.reduce_mean(modelVggOut, axis=1)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
-        model = tf.keras.Model(modelVggOut.input, outputs)  # (None, 3)
+        model = tf.keras.Model(modelVgg.input, outputs)  # (None, 3)
         model.summary()
         return model
 
@@ -45,6 +45,6 @@ class EffModelDense:
         x = tf.reduce_mean(modelResnetOut, axis=1)
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
-        model = tf.keras.Model(modelResnetOut.input, outputs)  # (None, 3)
+        model = tf.keras.Model(modelResnet.input, outputs)  # (None, 3)
         model.summary()
         return model
