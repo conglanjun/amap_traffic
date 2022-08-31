@@ -1,5 +1,7 @@
 import tensorflow as tf
 from model.EffModel import EffModel
+from model.VggModel import VggModel
+from model.ResnetModel import ResnetModel
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 
 
@@ -12,6 +14,8 @@ class EffModelDense:
             rnn_size=256
         )
         self.EffModel = EffModel()
+        self.VggModel = VggModel()
+        self.ResnetModel = ResnetModel()
 
     def getEffModelDense(self, n):
         modelEff = self.EffModel.getEffModel(n)
@@ -22,5 +26,25 @@ class EffModelDense:
         outputs = Dense(self.config['num_class'], activation="softmax")(x)
 
         model = tf.keras.Model(modelEff.input, outputs)  # (None, 3)
+        model.summary()
+        return model
+
+    def getVggModelDense(self):
+        modelVgg = self.VggModel.getVggModel()
+        modelVggOut = Dropout(0.2)(modelVgg.output)  # (None, 5, 256)
+        x = tf.reduce_mean(modelVggOut, axis=1)
+        outputs = Dense(self.config['num_class'], activation="softmax")(x)
+
+        model = tf.keras.Model(modelVggOut.input, outputs)  # (None, 3)
+        model.summary()
+        return model
+
+    def getResnetModelDense(self):
+        modelResnet = self.ResnetModel.getResnetModel()
+        modelResnetOut = Dropout(0.2)(modelResnet.output)  # (None, 5, 256)
+        x = tf.reduce_mean(modelResnetOut, axis=1)
+        outputs = Dense(self.config['num_class'], activation="softmax")(x)
+
+        model = tf.keras.Model(modelResnetOut.input, outputs)  # (None, 3)
         model.summary()
         return model

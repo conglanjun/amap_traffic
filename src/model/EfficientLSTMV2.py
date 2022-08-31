@@ -81,6 +81,10 @@ class EfficientLSTMV2:
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
         elif type == 'EffModelDense':
             model = self.EffModelDense.getEffModelDense(n)
+        elif type == 'VggModelDense':
+            model = self.EffModelDense.getVggModelDense(n)
+        elif type == 'ResnetModelDense':
+            model = self.EffModelDense.getResnetModelDense(n)
 
         epochs = 10
         if n == 0:
@@ -225,6 +229,10 @@ class EfficientLSTMV2:
             saveDir = 'EMDB6'
         elif n == 97:
             saveDir = 'EMDB7'
+        elif n == 100:
+            saveDir = 'VGG'
+        elif n == 101:
+            saveDir = 'Resnet'
 
         self.PREMODELPATH = self.subStr + '/src/model/checkpoint/' + \
             saveDir + "/trained_weights_final.h5"
@@ -310,6 +318,10 @@ class EfficientLSTMV2:
             model = self.EffTransformerLSTMModel.getEffTransformerBLSTMModel(n)
         elif type == 'EffModelDense':
             model = self.EffModelDense.getEffModelDense(n)
+        elif type == 'VggModelDense':
+            model = self.EffModelDense.getVggModelDense(n)
+        elif type == 'ResnetModelDense':
+            model = self.EffModelDense.getResnetModelDense(n)
 
         if n == 0:
             saveDir = 'B0'
@@ -453,6 +465,10 @@ class EfficientLSTMV2:
             saveDir = 'EMDB6'
         elif n == 97:
             saveDir = 'EMDB7'
+        elif n == 100:
+            saveDir = 'VGG'
+        elif n == 101:
+            saveDir = 'Resnet'
 
         path_load = self.subStr + '/src/model/checkpoint/' + \
             saveDir + "/trained_weights_final.h5"
